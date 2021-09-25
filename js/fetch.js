@@ -10,3 +10,16 @@ sendButton.addEventListener('click', () => {
     buscarEnApi(inputElement.value);
 
 });
+
+
+
+function buscarEnApi(cuidad) {
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cuidad}&appid=${API_KEY}&units=metric`)
+        .then(response => response.json())
+        .then(data => {
+            madeGrid(data);
+        })
+        .catch(function(error) {
+            console.log('Algo fallo!', error);
+        });
+}
