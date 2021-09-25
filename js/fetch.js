@@ -3,7 +3,7 @@ let URL = 'api.openweathermap.org/data/2.5/';
 
 let sendButton = document.getElementById('sendButton');
 let inputElement = document.getElementById('busqueda');
-let main = document.getElementById('main');
+let info = document.getElementById('info');
 
 sendButton.addEventListener('click', () => {
     console.log('Cuidad:', inputElement.value);
@@ -14,7 +14,7 @@ sendButton.addEventListener('click', () => {
 
 
 function buscarEnApi(cuidad) {
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cuidad}&appid=${API_KEY}&units=metric`)
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cuidad}&appid=${API_KEY}&units=metric&lang=es`)
         .then(response => response.json())
         .then(data => {
             madeGrid(data);
@@ -30,26 +30,128 @@ function madeGrid(data) {
     if (data.cod == 404) {
         console.log('ERROR 404! POR FAVOR, INGRESAR UNA CUIDAD VALIDA');
     } else {
-        let maxima = document.createElement("p");
+        inputElement.value = '';
+        info.innerHTML = '';
+
+        let temp = document.createElement("p");
         let minima = document.createElement("p");
+        let maxima = document.createElement("p");
         let humedad = document.createElement("p");
         let sensacion = document.createElement("p");
         let presion = document.createElement("p");
         let viento = document.createElement("p");
+        let ciudad = document.createElement("p");
+        let pais = document.createElement("p");
+        let icono = document.createElement("img");
+        let descripcion = document.createElement("p");
+        let icon;
 
-        main.appendChild(maxima);
-        main.appendChild(minima);
-        main.appendChild(humedad);
-        main.appendChild(sensacion);
-        main.appendChild(presion);
-        main.appendChild(viento);
 
-        maxima.innerHTML = 'Maxima: ' + data.main.temp_max;
-        minima.innerHTML = 'Minima: ' + data.main.temp_min;
-        humedad.innerHTML = 'Humedad: ' + data.main.humidity;
-        sensacion.innerHTML = 'Sensación Térmica:  ' + data.main.feels_like;
+
+        temp.className = 'temp';
+        ciudad.id = 'ciudad';
+        pais.className = 'pais';
+        icono.className = 'icono';
+        descripcion.className = 'descripcion';
+        maxima.className = 'col-md-2 col-6 maxima';
+        minima.className = 'col-md-2 col-6 minima';
+        humedad.className = 'col-md-2 col-6 humedad';
+        sensacion.className = 'col-md-2 col-6 sensacion';
+        presion.className = 'col-md-2 col-6 presion';
+        viento.className = 'col-md-2 col-6 viento';
+
+
+
+        icon = `http://openweathermap.org/img/wn/${
+            data.weather[0]["icon"]}@2x.png  `;
+
+
+
+        info.appendChild(icono);
+        info.appendChild(temp);
+        info.appendChild(ciudad);
+        info.appendChild(pais);
+        info.appendChild(descripcion);
+        info.appendChild(minima);
+        info.appendChild(maxima);
+        info.appendChild(humedad);
+        info.appendChild(sensacion);
+        info.appendChild(presion);
+        info.appendChild(viento);
+
+
+
+
+
+
+
+        pais = data.sys.country;
+        icono.src = icon;
+        ciudad.innerHTML = data.name + ' ' + pais;
+        descripcion.innerHTML = data.weather[0]["description"];
+        temp.innerHTML = data.main.temp + '°';
+        minima.innerHTML = 'Mín ' + data.main.temp_min + '°';
+        maxima.innerHTML = 'Max ' + data.main.temp_max + '° ';
+        humedad.innerHTML = 'Humedad ' + data.main.humidity + '%';
+        sensacion.innerHTML = 'Térmica  ' + data.main.feels_like;
         presion.innerHTML = 'Presión: ' + data.main.pressure;
-        viento.innerHTML = 'Velocidad del viento: ' + data.wind.speed;
+        viento.innerHTML = 'Vel. viento ' + data.wind.speed;
+
+
 
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+// switch (condicion) {
+//     case 'Thunderstorm':
+//         icon = 'url(../img/tormenta.png)';
+//         break;
+
+//     case 'Drizzle':
+//         icon = 'url(../img/lluvia.png)';
+//         break;
+
+//     case 'Rain':
+//         icon = 'url(../img/lluvia.png)';
+//         break;
+
+//     case 'Snow':
+//         icon = 'url(../img/nieve.png)';
+//         break;
+
+//     case 'Mist':
+//         icon = 'url(../img/neblina.png)';
+//         break;
+
+//     case 'Fog':
+//         icon = 'url(../img/neblina.png)';
+//         break;
+
+//     case 'Squall':
+//         icon = 'url(../img/chubasco.png)';
+//         break;
+
+//     case 'Tornado':
+//         icon = 'url(../img/tornado.png)';
+//         break;
+
+//     case 'Clear':
+//         icon = 'url(../img/luminosidad.png)';
+//         break;
+
+//     case 'Clouds':
+//         icon = 'url(../img/nubes.png)';
+//         break;
+// }
