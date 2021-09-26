@@ -48,12 +48,6 @@ input {
     text-align: center;
 }
 
-.pais {
-    font-size: 1em !important;
-    display: inline-block;
-    color: #ec6e4c;
-}
-
 .descripcion {
     text-transform: uppercase;
     margin-bottom: 1em;

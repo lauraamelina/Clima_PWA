@@ -1,14 +1,24 @@
 let API_KEY = '18f3fdf8f746f9f414adbf8c2e402ce5';
+let API_KEY_MAPS = 'AIzaSyBjd6R2O-sW4UDj3bubzkRdD1rlWwFFK6g';
 let URL = 'api.openweathermap.org/data/2.5/';
+
+
+let latitud;
+let longitud;
 
 let sendButton = document.getElementById('sendButton');
 let inputElement = document.getElementById('busqueda');
 let info = document.getElementById('info');
+let ultimaBusqueda = JSON.parse(localStorage.getItem('ciudad'));
+
+if (ultimaBusqueda != null) {
+    madeGrid(ultimaBusqueda);
+}
+
 
 sendButton.addEventListener('click', () => {
     console.log('Cuidad:', inputElement.value);
     buscarEnApi(inputElement.value);
-
 });
 
 
@@ -17,11 +27,16 @@ function buscarEnApi(cuidad) {
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cuidad}&appid=${API_KEY}&units=metric&lang=es`)
         .then(response => response.json())
         .then(data => {
+            guardarResultado('ciudad', data);
             madeGrid(data);
         })
         .catch(function(error) {
             console.log('Algo fallo!', error);
         });
+}
+
+function guardarResultado(key, data) {
+    localStorage.setItem(key, JSON.stringify(data));
 }
 
 
@@ -45,8 +60,8 @@ function madeGrid(data) {
         let icono = document.createElement("img");
         let descripcion = document.createElement("p");
         let icon;
-
-
+        latitud = data.coord.lat;
+        longitud = data.coord.lon;
 
         temp.className = 'temp';
         ciudad.id = 'ciudad';
@@ -60,12 +75,7 @@ function madeGrid(data) {
         presion.className = 'col-md-2 col-6 presion';
         viento.className = 'col-md-2 col-6 viento';
 
-
-
-        icon = `http://openweathermap.org/img/wn/${
-            data.weather[0]["icon"]}@2x.png  `;
-
-
+        icon = `http://openweathermap.org/img/wn/${data.weather[0]["icon"]}@2x.png`;
 
         info.appendChild(icono);
         info.appendChild(temp);
@@ -78,12 +88,6 @@ function madeGrid(data) {
         info.appendChild(sensacion);
         info.appendChild(presion);
         info.appendChild(viento);
-
-
-
-
-
-
 
         pais = data.sys.country;
         icono.src = icon;
@@ -100,6 +104,20 @@ function madeGrid(data) {
 
 
     }
+}
+
+
+function iniciarMap() {
+    var coord = { latitud, longitud };
+    var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 13,
+        center: coord
+    });
+
+    var marker = new google.maps.Marker({
+        position: coord,
+        map: map
+    });
 }
 
 
