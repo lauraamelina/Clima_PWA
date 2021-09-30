@@ -61,6 +61,8 @@ function madeGrid(data) {
 
     if (data.cod == 404) {
         console.log('ERROR 404! POR FAVOR, INGRESAR UNA CUIDAD VALIDA');
+        alert('Ingrese una ciudad valida.')
+
     } else {
         inputElement.value = '';
         info.innerHTML = '';
