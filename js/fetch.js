@@ -1,15 +1,23 @@
 let API_KEY = '18f3fdf8f746f9f414adbf8c2e402ce5';
 let API_KEY_MAPS = 'AIzaSyBjd6R2O-sW4UDj3bubzkRdD1rlWwFFK6g';
-let URL = 'api.openweathermap.org/data/2.5/';
-
 
 let latitud;
 let longitud;
+
+
+var myLatlng;
+var map;
+var infowindow;
+var latitude;
+var longtitude;
+var marker;
 
 let sendButton = document.getElementById('sendButton');
 let inputElement = document.getElementById('busqueda');
 let info = document.getElementById('info');
 let ultimaBusqueda = JSON.parse(localStorage.getItem('ciudad'));
+let mapa = document.getElementById('map');
+
 
 if (ultimaBusqueda != null) {
     madeGrid(ultimaBusqueda);
@@ -19,9 +27,8 @@ if (ultimaBusqueda != null) {
 sendButton.addEventListener('click', () => {
     console.log('Cuidad:', inputElement.value);
     buscarEnApi(inputElement.value);
+
 });
-
-
 
 function buscarEnApi(cuidad) {
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cuidad}&appid=${API_KEY}&units=metric&lang=es`)
@@ -29,6 +36,9 @@ function buscarEnApi(cuidad) {
         .then(data => {
             guardarResultado('ciudad', data);
             madeGrid(data);
+            updatePosition(data.coord.lat, data.coord.lon);
+            console.log(data.coord.lat, data.coord.lon);
+
         })
         .catch(function(error) {
             console.log('Algo fallo!', error);
@@ -42,6 +52,7 @@ function guardarResultado(key, data) {
 
 function madeGrid(data) {
     console.log('Data:', data);
+
     if (data.cod == 404) {
         console.log('ERROR 404! POR FAVOR, INGRESAR UNA CUIDAD VALIDA');
     } else {
@@ -62,6 +73,7 @@ function madeGrid(data) {
         let icon;
         latitud = data.coord.lat;
         longitud = data.coord.lon;
+
 
         temp.className = 'temp';
         ciudad.id = 'ciudad';
@@ -103,33 +115,45 @@ function madeGrid(data) {
 
 
 
+
+
     }
-}
 
-
-function iniciarMap() {
-    var coord = { latitud, longitud };
-    var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 13,
-        center: coord
-    });
-
-    var marker = new google.maps.Marker({
-        position: coord,
-        map: map
-    });
 }
 
 
 
 
+loadMap();
+
+function loadMap() {
+    myLatlng = new google.maps.LatLng(latitud, longitud);
+
+    var mapOptions = {
+        zoom: 10,
+        center: myLatlng
+    };
+
+    map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
 
+    marker = new google.maps.Marker({
+        position: myLatlng,
+        map: map,
+        title: "The Mew",
+        animation: google.maps.Animation.DROP
+    });
 
+    google.maps.event.addListener(marker, 'click', function() {
+        infowindow.open(map, marker);
+    });
+}
 
-
-
-
+function updatePosition(lat, lng) {
+    myLatlng = new google.maps.LatLng(lat, lng);
+    marker.setPosition(myLatlng);
+    map.setCenter(myLatlng);
+}
 
 
 // switch (condicion) {

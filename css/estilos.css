@@ -31,6 +31,7 @@ input {
 #info {
     margin-top: 1em;
     font-weight: bold;
+    margin-bottom: 3em;
 }
 
 #ciudad {
@@ -101,5 +102,23 @@ input {
     }
     .main {
         margin-top: 2em;
+    }
+}
+
+#map {
+    margin: 0 auto 3em auto;
+    width: 80%;
+    height: 0;
+    padding-top: 20%;
+    position: relative;
+}
+
+@media screen and (max-width: 768px) {
+    #map {
+        margin: 0 auto 3em auto;
+        width: 80%;
+        height: 0;
+        padding-top: 40%;
+        position: relative;
     }
 }
