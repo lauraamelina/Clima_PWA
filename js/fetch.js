@@ -18,14 +18,21 @@ let ultimaBusqueda = JSON.parse(localStorage.getItem('ciudad'));
 let mapa = document.getElementById('map');
 
 
+
 if (ultimaBusqueda != null) {
     madeGrid(ultimaBusqueda);
+    mapa.style.display = 'block';
+} else {
+    mapa.style.display = 'none';
+
 }
 
 
 sendButton.addEventListener('click', () => {
     console.log('Cuidad:', inputElement.value);
     buscarEnApi(inputElement.value);
+    mapa.style.display = 'block';
+
 
 });
 
