@@ -1,5 +1,4 @@
 let API_KEY = '18f3fdf8f746f9f414adbf8c2e402ce5';
-let API_KEY_MAPS = 'AIzaSyBjd6R2O-sW4UDj3bubzkRdD1rlWwFFK6g';
 
 let latitud;
 let longitud;
