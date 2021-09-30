@@ -16,6 +16,8 @@ let inputElement = document.getElementById('busqueda');
 let info = document.getElementById('info');
 let ultimaBusqueda = JSON.parse(localStorage.getItem('ciudad'));
 let mapa = document.getElementById('map');
+mapa.style.display = 'none';
+
 
 
 
